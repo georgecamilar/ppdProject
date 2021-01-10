@@ -8,6 +8,9 @@ import java.io.Serializable;
 public class VanzareLoc implements Serializable {
 
     @Id
+    @Column(name = "id")
+    private Integer id;
+
     @ManyToOne
     @JoinColumn(name = "idVanzare")
     private Vanzare idVanzare;

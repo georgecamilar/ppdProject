@@ -16,8 +16,7 @@ import java.util.Collection;
 
 
 @Controller
-@RequestMapping(path = "/localppd")
-@ComponentScan(basePackageClasses = SpectacleRepository.class)
+@RequestMapping(path = "/rest")
 public class RestControllerPPD {
 
     private Service service;
