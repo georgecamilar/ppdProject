@@ -61,11 +61,12 @@ public class Server {
         public void run() {
             executeCommands();
         }
+
         private void executeCommands() {
             while (true) {
                 if (!clientOrders.isEmpty()) {
                     for (ClientOrder clientOrder : clientOrders)
-                        executor.execute(new Task(clientOrder.command, clientOrder.client, service));
+                        executor.execute(new Task(clientOrder.command, clientOrder.client, clientOrder.outputStream, clientOrder.inputStream, service));
                 }
             }
         }
@@ -73,11 +74,15 @@ public class Server {
 
     class ClientOrder {
         Socket client;
+        ObjectOutputStream outputStream;
+        ObjectInputStream inputStream;
         String command;
 
-        public ClientOrder(Socket client, String command) {
+        public ClientOrder(Socket client, ObjectOutputStream outputStream, ObjectInputStream inputStream, String command) {
             this.client = client;
             this.command = command;
+            this.inputStream = inputStream;
+            this.outputStream = outputStream;
         }
     }
 
@@ -97,7 +102,7 @@ public class Server {
             while (running) {
                 try {
                     String received = (String) inputStream.readObject();
-                    ClientOrder clientOrder = new ClientOrder(clientConnection, received);
+                    ClientOrder clientOrder = new ClientOrder(clientConnection, outputStream, inputStream, received);
                     clientOrders.add(clientOrder);
                 } catch (IOException | ClassNotFoundException exception) {
                     exception.printStackTrace();
