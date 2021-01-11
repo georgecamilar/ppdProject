@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 10, 2021 at 04:41 PM
+-- Generation Time: Jan 11, 2021 at 01:12 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.0
 
@@ -44,6 +44,13 @@ CREATE TABLE `spectacol` (
   `pret_bilet` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `spectacol`
+--
+
+INSERT INTO `spectacol` (`ID_spectacol`, `data_spectacol`, `titlu`, `pret_bilet`) VALUES
+(1, '2021-01-11 13:54:14', 'sdfsdfs', '13123');
+
 -- --------------------------------------------------------
 
 --
@@ -52,19 +59,8 @@ CREATE TABLE `spectacol` (
 
 CREATE TABLE `vanzare` (
   `id` int(11) NOT NULL,
-  `idSpectacol` int(11) NOT NULL,
-  `data_vanzare` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `vanzare_loc`
---
-
-CREATE TABLE `vanzare_loc` (
-  `idVanzare` int(11) NOT NULL,
-  `NrLoc` int(11) NOT NULL
+  `data_vanzare` datetime NOT NULL,
+  `id_spectacol` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -82,13 +78,7 @@ ALTER TABLE `spectacol`
 --
 ALTER TABLE `vanzare`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_spectacol_vanzare` (`idSpectacol`);
-
---
--- Indexes for table `vanzare_loc`
---
-ALTER TABLE `vanzare_loc`
-  ADD KEY `FK_vanzare_loc` (`idVanzare`);
+  ADD KEY `FK3wibqo1jo8iswyv5mfb9c0s5q` (`id_spectacol`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -98,7 +88,7 @@ ALTER TABLE `vanzare_loc`
 -- AUTO_INCREMENT for table `spectacol`
 --
 ALTER TABLE `spectacol`
-  MODIFY `ID_spectacol` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID_spectacol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `vanzare`
@@ -114,13 +104,7 @@ ALTER TABLE `vanzare`
 -- Constraints for table `vanzare`
 --
 ALTER TABLE `vanzare`
-  ADD CONSTRAINT `FK_spectacol_vanzare` FOREIGN KEY (`idSpectacol`) REFERENCES `spectacol` (`ID_spectacol`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `vanzare_loc`
---
-ALTER TABLE `vanzare_loc`
-  ADD CONSTRAINT `FK_vanzare_loc` FOREIGN KEY (`idVanzare`) REFERENCES `vanzare` (`id`);
+  ADD CONSTRAINT `FK3wibqo1jo8iswyv5mfb9c0s5q` FOREIGN KEY (`id_spectacol`) REFERENCES `spectacol` (`ID_spectacol`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

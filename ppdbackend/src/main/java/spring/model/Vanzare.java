@@ -1,5 +1,7 @@
 package spring.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -9,6 +11,7 @@ import java.util.Date;
 public class Vanzare implements Serializable {
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
 
     @Column(name = "data_vanzare")
@@ -50,4 +53,5 @@ public class Vanzare implements Serializable {
     public void setSpectacol(Spectacol spectacol) {
         this.spectacol = spectacol;
     }
+
 }

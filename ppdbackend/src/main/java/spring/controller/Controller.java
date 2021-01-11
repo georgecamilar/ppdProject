@@ -32,14 +32,4 @@ public class Controller {
         return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(value = "/getAllSpectacles", method = RequestMethod.GET)
-    public ResponseEntity<?> getAllSpectacles() {
-        Collection<Spectacol> collection = new ArrayList<>();
-        for (Spectacol c : spectacleRepository.findAll()) {
-            collection.add(c);
-        }
-        Spectacol[] toReturn = new Spectacol[collection.size()];
-        toReturn = collection.toArray(toReturn);
-        return new ResponseEntity<>(toReturn, HttpStatus.OK);
-    }
 }
