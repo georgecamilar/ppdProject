@@ -32,7 +32,8 @@ public class Server {
 
     public void run() {
         running = true;
-        executeCommands();
+        ReadThread readThread = new ReadThread();
+        readThread.start();
         while (running) {
             try {
                 /* accepting connections */
@@ -43,6 +44,7 @@ public class Server {
                 ObjectInputStream inputStream = new ObjectInputStream(client.getInputStream());
 
                 WorkerThread worker = new WorkerThread(client, inputStream, outputStream);
+                worker.start();
                 clientList.add(worker);
 
                 System.out.println("Client connected! Inet address : " + client.getInetAddress());
@@ -53,14 +55,21 @@ public class Server {
         }
     }
 
-    private void executeCommands() {
-        while (true) {
-            if (!clientOrders.isEmpty()) {
-                for (String command : clientOrders)
-                    executor.execute(new Task(command, service));
-            }
-        }
 
+    class ReadThread extends Thread{
+        @Override
+        public void run() {
+            executeCommands();
+        }
+        private void executeCommands() {
+            while (true) {
+                if (!clientOrders.isEmpty()) {
+                    for (String command : clientOrders)
+                        executor.execute(new Task(command, service));
+                }
+            }
+
+        }
     }
 
     class WorkerThread extends Thread {
