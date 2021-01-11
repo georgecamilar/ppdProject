@@ -12,6 +12,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 public class Task implements Runnable {
+
     private String taskDescription;
     private Service serviceInstance;
     private String result;
