@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 @RestController
-    @RequestMapping(path = "rest/spectacole")
+@RequestMapping(path = "rest/spectacole")
 public class SpectacolController {
 
     @Autowired
