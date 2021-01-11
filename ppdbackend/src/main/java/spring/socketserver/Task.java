@@ -5,6 +5,7 @@ import spring.model.Spectacol;
 import spring.model.Vanzare;
 
 import java.math.BigDecimal;
+import java.net.Socket;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,13 +14,15 @@ import java.util.Optional;
 
 public class Task implements Runnable {
 
+    private Socket clientConnection;
     private String taskDescription;
     private Service serviceInstance;
     private String result;
 
-    public Task(String taskDescription, Service serviceInstance) {
-        this.taskDescription = taskDescription;
-        this.serviceInstance = serviceInstance;
+    public Task(String taskDescription, Socket clientConnection, Service serviceInstance) {
+        this.clientConnection = clientConnection;
+        this.taskDescription  = taskDescription;
+        this.serviceInstance  = serviceInstance;
     }
 
     @Override

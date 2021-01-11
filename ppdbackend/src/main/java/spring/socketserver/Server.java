@@ -18,7 +18,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class Server {
     private ServerSocket serverSocket;
     private boolean running;
-    private Queue<String> clientOrders = new LinkedList<>();
+    private Queue<ClientOrder> clientOrders = new LinkedList<>();
     private List<WorkerThread> clientList = new ArrayList<>();
     private ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(2);
 
@@ -56,7 +56,7 @@ public class Server {
     }
 
 
-    class ReadThread extends Thread{
+    class ReadThread extends Thread {
         @Override
         public void run() {
             executeCommands();
@@ -64,11 +64,20 @@ public class Server {
         private void executeCommands() {
             while (true) {
                 if (!clientOrders.isEmpty()) {
-                    for (String command : clientOrders)
-                        executor.execute(new Task(command, service));
+                    for (ClientOrder clientOrder : clientOrders)
+                        executor.execute(new Task(clientOrder.command, clientOrder.client, service));
                 }
             }
+        }
+    }
 
+    class ClientOrder {
+        Socket client;
+        String command;
+
+        public ClientOrder(Socket client, String command) {
+            this.client = client;
+            this.command = command;
         }
     }
 
@@ -88,7 +97,8 @@ public class Server {
             while (running) {
                 try {
                     String received = (String) inputStream.readObject();
-                    clientOrders.add(received);
+                    ClientOrder clientOrder = new ClientOrder(clientConnection, received);
+                    clientOrders.add(clientOrder);
                 } catch (IOException | ClassNotFoundException exception) {
                     exception.printStackTrace();
                 }
