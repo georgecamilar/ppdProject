@@ -1,29 +1,27 @@
 package spring.controller;
 
-import spring.model.Spectacol;
-import spring.repos.SpectacleRepository;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import spring.services.Service;
+import org.springframework.web.bind.annotation.RestController;
+import spring.model.Spectacol;
+import spring.repos.SpectacolRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 
-@Controller
+@RestController
 @RequestMapping(path = "/rest")
-public class RestControllerPPD {
+public class Controller {
 
-    private Service service;
+    @Autowired
+    private SpectacolRepository spectacleRepository;
 
-    public RestControllerPPD(){
-        service = new Service();
-    }
+
     @GetMapping("/hello")
     public String getHello() {
         return "Hello";
@@ -37,7 +35,7 @@ public class RestControllerPPD {
     @RequestMapping(value = "/getAllSpectacles", method = RequestMethod.GET)
     public ResponseEntity<?> getAllSpectacles() {
         Collection<Spectacol> collection = new ArrayList<>();
-        for (Spectacol c : service.getSpectacolRepository().findAll()) {
+        for (Spectacol c : spectacleRepository.findAll()) {
             collection.add(c);
         }
         Spectacol[] toReturn = new Spectacol[collection.size()];
