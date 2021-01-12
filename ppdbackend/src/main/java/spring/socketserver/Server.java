@@ -27,7 +27,6 @@ public class Server {
 
     public Server() throws IOException {
         serverSocket = new ServerSocket(8081);
-
     }
 
 

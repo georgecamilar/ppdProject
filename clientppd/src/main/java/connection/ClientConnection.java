@@ -17,6 +17,13 @@ public class ClientConnection {
     }
 
 
+    public void send(String value) throws IOException, ClassNotFoundException {
+        outputStream.writeObject(value);
+        Object received = inputStream.readObject();
+        if (received instanceof Iterable){
+
+        }
+    }
 
 
     public ObjectOutputStream getOutputStream() {
