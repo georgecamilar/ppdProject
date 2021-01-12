@@ -77,9 +77,9 @@ public class Server {
         Socket client;
         ObjectOutputStream outputStream;
         ObjectInputStream inputStream;
-        String command;
+        Object command;
 
-        public ClientOrder(Socket client, ObjectOutputStream outputStream, ObjectInputStream inputStream, String command) {
+        public ClientOrder(Socket client, ObjectOutputStream outputStream, ObjectInputStream inputStream, Object command) {
             this.client = client;
             this.command = command;
             this.inputStream = inputStream;
@@ -102,7 +102,7 @@ public class Server {
         public void run() {
             while (running) {
                 try {
-                    String received = (String) inputStream.readObject();
+                    Object received =  inputStream.readObject();
                     ClientOrder clientOrder = new ClientOrder(clientConnection, outputStream, inputStream, received);
                     clientOrders.add(clientOrder);
                 } catch (IOException | ClassNotFoundException exception) {
