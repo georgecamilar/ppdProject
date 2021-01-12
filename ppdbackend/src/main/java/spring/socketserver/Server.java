@@ -59,12 +59,15 @@ public class Server {
     class ReadThread extends Thread {
         @Override
         public void run() {
+            System.out.println("started read thread");
             executeCommands();
         }
 
         private void executeCommands() {
+            System.out.println("started execute");
             while (true) {
                 if (!clientOrders.isEmpty()) {
+                    System.out.println("is not empty");
                     for (ClientOrder clientOrder : clientOrders)
                         executor.execute(new Task(clientOrder.command, clientOrder.client, clientOrder.outputStream, clientOrder.inputStream, service));
                 }
@@ -102,6 +105,7 @@ public class Server {
             while (running) {
                 try {
                     Object received =  inputStream.readObject();
+                    System.out.println(received);
                     ClientOrder clientOrder = new ClientOrder(clientConnection, outputStream, inputStream, received);
                     clientOrders.add(clientOrder);
                 } catch (IOException | ClassNotFoundException exception) {

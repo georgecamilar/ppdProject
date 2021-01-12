@@ -16,15 +16,18 @@ public class ClientConnection {
         inputStream = new ObjectInputStream(connection.getInputStream());
     }
 
+    public void getSala() {
+        try {
+            outputStream.writeObject("Sala");
 
-    public void send(String value) throws IOException, ClassNotFoundException {
-        outputStream.writeObject(value);
-        Object received = inputStream.readObject();
-        if (received instanceof Iterable){
-
+            Sala sala = (Sala) inputStream.readObject();
+            System.out.println(sala.getNr_locuri());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
-
 
     public ObjectOutputStream getOutputStream() {
         return outputStream;
