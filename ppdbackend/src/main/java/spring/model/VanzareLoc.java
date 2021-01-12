@@ -19,6 +19,14 @@ public class VanzareLoc implements Serializable {
     @Column(name = "NrLoc")
     private Integer nrLoc;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public VanzareLoc() {
     }
 
