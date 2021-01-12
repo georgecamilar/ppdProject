@@ -116,8 +116,9 @@ public class Server {
                     Object received =  inputStream.readObject();
                     ClientOrder clientOrder = new ClientOrder(clientConnection, outputStream, inputStream, received);
                     clientOrders.add(clientOrder);
-                } catch (IOException | ClassNotFoundException exception) {
-                    exception.printStackTrace();
+                } catch (Exception exception) {
+                    System.err.println(exception.getMessage());
+                    break;
                 }
             }
         }

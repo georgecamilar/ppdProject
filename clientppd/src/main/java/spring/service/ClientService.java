@@ -67,7 +67,7 @@ public class ClientService {
 
         try {
             outputStream.writeObject(v);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

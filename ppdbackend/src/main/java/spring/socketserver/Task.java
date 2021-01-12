@@ -43,6 +43,7 @@ public class Task implements Runnable {
 
     @Override
     public void run() {
+        try {
         if (taskDescription instanceof Vanzare) {
             synchronized (vanzari) {
                 Vanzare vanzare = (Vanzare) taskDescription;
@@ -87,8 +88,9 @@ public class Task implements Runnable {
                         if (cc.client.isConnected()) {
                             try {
                                 cc.stream.writeObject(locuriOcupateMsg);
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                            } catch (Exception e) {
+                                System.err.println("Client disconnected");
+                                connectedClients.remove(cc);
                             }
                         }
                     }
@@ -109,10 +111,10 @@ public class Task implements Runnable {
             }
         }
 
-        try {
+
             System.out.println(result);
             outputStream.writeObject(result);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

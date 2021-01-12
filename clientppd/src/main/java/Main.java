@@ -2,6 +2,7 @@ import spring.connection.ClientConnection;
 import spring.model.*;
 import spring.service.ClientService;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -60,7 +61,7 @@ class SenderThread extends Thread {
 
     @Override
     public void run() {
-        while(true) {
+        while (true) {
             try {
                 clientService.sendRandomVanzare(nr_locuri, spectacole);
                 sleep(2000);
@@ -79,7 +80,7 @@ class ReaderThread extends Thread {
     ClientService clientService;
     List<Spectacol> spectacole;
 
-    public ReaderThread(int nr_locuri, List<Vanzare> vanzariTrimise,  BlockingQueue<Vanzare> vanzariPrimite, ClientService clientService, List<Spectacol> spectacole) {
+    public ReaderThread(int nr_locuri, List<Vanzare> vanzariTrimise, BlockingQueue<Vanzare> vanzariPrimite, ClientService clientService, List<Spectacol> spectacole) {
         this.nr_locuri = nr_locuri;
         this.vanzariTrimise = vanzariTrimise;
         this.vanzariPrimite = vanzariPrimite;
@@ -89,7 +90,7 @@ class ReaderThread extends Thread {
 
     @Override
     public void run() {
-        while(true) {
+        while (true) {
             ObjectInputStream inputStream = this.clientService.clientConnection.getInputStream();
             try {
                 Object received = inputStream.readObject();
@@ -106,6 +107,9 @@ class ReaderThread extends Thread {
                 if (received instanceof String && received.equals("TERMINATED")) {
                     break;
                 }
+            } catch (EOFException exception) {
+                exception.printStackTrace();
+                break;
             } catch (Exception e) {
                 e.printStackTrace();
             }
