@@ -85,6 +85,13 @@ public class Server {
         public void run() {
             try {
                 sleep(time);
+                connectedClients.forEach(el -> {
+                    try {
+                        el.stream.writeObject("Terminated");
+                    } catch (IOException exception) {
+                        exception.printStackTrace();
+                    }
+                });
                 System.exit(0);
             } catch (InterruptedException e) {
                 System.err.println("Time crashed");
