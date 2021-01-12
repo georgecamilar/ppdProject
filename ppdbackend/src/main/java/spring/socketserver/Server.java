@@ -1,4 +1,5 @@
 package spring.socketserver;
+
 import spring.controller.Service;
 import spring.model.ConnectedClient;
 import spring.model.Vanzare;
@@ -27,12 +28,25 @@ public class Server {
 
     Service service;
 
+    private String serverRunTime;
+
     public Server() throws IOException {
         serverSocket = new ServerSocket(8081);
+        serverRunTime = "";
+    }
+
+    public Server(String runTime) throws IOException {
+        serverSocket = new ServerSocket(8081);
+        this.serverRunTime = runTime;
     }
 
 
     public void run() {
+        if (!serverRunTime.equals("")) {
+            long time = Long.parseLong(serverRunTime);
+            TimeThread timeThread = new TimeThread(time);
+            timeThread.start();
+        }
         running = true;
         ReadThread readThread = new ReadThread(vanzari);
         readThread.start();
@@ -61,8 +75,26 @@ public class Server {
     }
 
 
+    class TimeThread extends Thread{
+        long time;
+        TimeThread(long time){
+            this.time = time;
+        }
+
+        @Override
+        public void run() {
+            try {
+                sleep(time);
+                System.exit(0);
+            } catch (InterruptedException e) {
+                System.err.println("Time crashed");
+            }
+        }
+    }
+
     class ReadThread extends Thread {
         List<Vanzare> vanzari;
+
         public ReadThread(List<Vanzare> vanzari) {
             this.vanzari = vanzari;
         }
@@ -75,7 +107,7 @@ public class Server {
         private void executeCommands() {
             while (true) {
                 if (!clientOrders.isEmpty()) {
-                    for (ClientOrder clientOrder : clientOrders){
+                    for (ClientOrder clientOrder : clientOrders) {
                         executor.execute(new Task(clientOrder.command, clientOrder.client, clientOrder.outputStream, clientOrder.inputStream, service, this.vanzari, connectedClients));
                         clientOrders.remove(clientOrder);
                     }
@@ -113,7 +145,7 @@ public class Server {
         public void run() {
             while (running) {
                 try {
-                    Object received =  inputStream.readObject();
+                    Object received = inputStream.readObject();
                     ClientOrder clientOrder = new ClientOrder(clientConnection, outputStream, inputStream, received);
                     clientOrders.add(clientOrder);
                 } catch (Exception exception) {
