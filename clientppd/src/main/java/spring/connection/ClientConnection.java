@@ -1,6 +1,4 @@
-package connection;
-
-import model.Sala;
+package spring.connection;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -16,19 +14,6 @@ public class ClientConnection {
         connection = new Socket(host, port);
         outputStream = new ObjectOutputStream(connection.getOutputStream());
         inputStream = new ObjectInputStream(connection.getInputStream());
-    }
-
-    public void getSala() {
-        try {
-            outputStream.writeObject("Sala");
-
-            Sala sala = (Sala) inputStream.readObject();
-            System.out.println(sala.getNr_locuri());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     public ObjectOutputStream getOutputStream() {

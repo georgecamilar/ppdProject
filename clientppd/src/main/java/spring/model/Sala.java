@@ -1,4 +1,4 @@
-package model;
+package spring.model;
 import java.io.Serializable;
 
 public class Sala implements Serializable {
@@ -7,12 +7,12 @@ public class Sala implements Serializable {
     public Sala(Integer nr_locuri) {
         this.nr_locuri = nr_locuri;
     }
+    public Sala() { }
 
-    public void setNr_locuri(Integer nr_locuri) {
+    public void setNrLocuri(Integer nr_locuri) {
         this.nr_locuri = nr_locuri;
     }
-
-    public Integer getNr_locuri() {
+    public Integer getNrLocuri() {
         return this.nr_locuri;
     }
 }
