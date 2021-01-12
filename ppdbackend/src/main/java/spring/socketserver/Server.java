@@ -1,28 +1,30 @@
 package spring.socketserver;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import spring.controller.Service;
+import spring.model.ConnectedClient;
+import spring.model.Vanzare;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public class Server {
     private ServerSocket serverSocket;
     private boolean running;
-    private Queue<ClientOrder> clientOrders = new LinkedList<>();
-    private List<WorkerThread> clientList = new ArrayList<>();
-    private ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(2);
+    private Queue<ClientOrder> clientOrders = new ArrayBlockingQueue<ClientOrder>(1024);
 
-    @Autowired
+    private List<Vanzare> vanzari = Collections.synchronizedList(new ArrayList<Vanzare>());
+
+    private List<WorkerThread> clientList = new ArrayList<>();
+    private List<ConnectedClient> connectedClients = new ArrayList<ConnectedClient>();
+
+    private ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
+
     Service service;
 
     public Server() throws IOException {
@@ -32,8 +34,9 @@ public class Server {
 
     public void run() {
         running = true;
-        ReadThread readThread = new ReadThread();
+        ReadThread readThread = new ReadThread(vanzari);
         readThread.start();
+
         while (running) {
             try {
                 /* accepting connections */
@@ -45,7 +48,9 @@ public class Server {
 
                 WorkerThread worker = new WorkerThread(client, inputStream, outputStream);
                 worker.start();
+
                 clientList.add(worker);
+                connectedClients.add(new ConnectedClient(client, outputStream));
 
                 System.out.println("Client connected! Inet address : " + client.getInetAddress());
             } catch (IOException exception) {
@@ -57,19 +62,23 @@ public class Server {
 
 
     class ReadThread extends Thread {
+        List<Vanzare> vanzari;
+        public ReadThread(List<Vanzare> vanzari) {
+            this.vanzari = vanzari;
+        }
+
         @Override
         public void run() {
-            System.out.println("started read thread");
             executeCommands();
         }
 
         private void executeCommands() {
-            System.out.println("started execute");
             while (true) {
                 if (!clientOrders.isEmpty()) {
-                    System.out.println("is not empty");
-                    for (ClientOrder clientOrder : clientOrders)
-                        executor.execute(new Task(clientOrder.command, clientOrder.client, clientOrder.outputStream, clientOrder.inputStream, service));
+                    for (ClientOrder clientOrder : clientOrders){
+                        executor.execute(new Task(clientOrder.command, clientOrder.client, clientOrder.outputStream, clientOrder.inputStream, service, this.vanzari, connectedClients));
+                        clientOrders.remove(clientOrder);
+                    }
                 }
             }
         }
@@ -105,7 +114,6 @@ public class Server {
             while (running) {
                 try {
                     Object received =  inputStream.readObject();
-                    System.out.println(received);
                     ClientOrder clientOrder = new ClientOrder(clientConnection, outputStream, inputStream, received);
                     clientOrders.add(clientOrder);
                 } catch (IOException | ClassNotFoundException exception) {
@@ -114,5 +122,4 @@ public class Server {
             }
         }
     }
-
 }
