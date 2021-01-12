@@ -3,25 +3,23 @@ package spring.socketserver;
 import spring.controller.Service;
 import spring.model.Spectacol;
 import spring.model.Vanzare;
+import spring.model.VanzareLoc;
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.math.BigDecimal;
 import java.net.Socket;
-import java.util.Date;
 import java.util.Optional;
 
 public class Task implements Runnable {
 
     private Socket clientConnection;
-    private String taskDescription;
+    private Object taskDescription;
     private Service serviceInstance;
-    private String result;
+    private Object result;
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
 
-    public Task(String taskDescription, Socket clientConnection, ObjectOutputStream outputStream, ObjectInputStream inputStream, Service serviceInstance) {
+    public Task(Object taskDescription, Socket clientConnection, ObjectOutputStream outputStream, ObjectInputStream inputStream, Service serviceInstance) {
         this.clientConnection = clientConnection;
         this.taskDescription = taskDescription;
         this.serviceInstance = serviceInstance;
@@ -29,49 +27,39 @@ public class Task implements Runnable {
 
     @Override
     public void run() {
-        try {
-            String[] taskFields = taskDescription.split(";");
-            switch (taskFields[0]) {
-                case "add":
-                    String[] fields = taskFields[1].split("-");
-                    String[] data = fields[1].split(" ");
-                    if (fields[0].equals("Spectacol")) {
-                        Spectacol spectacol = new Spectacol();
-                        //set date
-                        Date time = new Date(Long.parseLong(data[0]));
-                        spectacol.setData_spectacol(time);
-                        //set title
-                        spectacol.setTitlu(data[1]);
-                        spectacol.setPret_bilet(new BigDecimal(data[2]));
-                        this.serviceInstance.getSpectacolRepository().save(spectacol);
-                        this.result = "added";
-                    }
-                    if (fields[0].equals("Vanzare")) {
-                        Vanzare vanzare = new Vanzare();
-                        //set date
-                        Date time = new Date(Long.parseLong(data[0]));
-                        vanzare.setData_vanzare(time);
-                        //set title
-                        Optional<Spectacol> spectacol = serviceInstance.getSpectacolRepository().findById(Integer.parseInt(data[1]));
-                        //todo spectacol exists check
-                        vanzare.setSpectacol(spectacol.get());
-                        this.serviceInstance.getVanzareRepository().save(vanzare);
-                        this.result = "added";
-
-                    }
+        if (taskDescription instanceof Spectacol) {
+            Optional<Spectacol> optionalVar = serviceInstance.getSpectacolRepository().findById(((Spectacol) taskDescription).getID_spectacol());
+            optionalVar.ifPresent(current -> serviceInstance.getSpectacolRepository().delete(current));
+            serviceInstance.getSpectacolRepository().save((Spectacol) taskDescription);
+            result = "changes saved";
+        } else if (taskDescription instanceof Vanzare) {
+            Optional<Vanzare> optionalVar = serviceInstance.getVanzareRepository().findById(((Vanzare) taskDescription).getId());
+            optionalVar.ifPresent(current -> serviceInstance.getVanzareRepository().delete(current));
+            serviceInstance.getVanzareRepository().save((Vanzare) taskDescription);
+            result = "changes saved";
+        } else if (taskDescription instanceof VanzareLoc) {
+            Optional<VanzareLoc> optionalVar = serviceInstance.getVanzareLocRepository().findById(((VanzareLoc) taskDescription).getId());
+            optionalVar.ifPresent(current -> serviceInstance.getVanzareLocRepository().delete(current));
+            serviceInstance.getVanzareLocRepository().save((VanzareLoc) taskDescription);
+            result = "changes saved";
+        } else if (taskDescription instanceof String) {
+            switch ((String) taskDescription) {
+                case "Spectacol":
+                    result = serviceInstance.getSpectacolRepository().findAll();
                     break;
-                case "getAll":
-                    if (taskFields[1].equals("Spectacol")) {
-                        StringBuilder builder = new StringBuilder();
-                        serviceInstance.getSpectacolRepository().findAll().forEach(el -> builder.append(el.toString()).append(" "));
-                        result = builder.toString();
-                    }
+                case "Vanzare":
+                    result = serviceInstance.getVanzareRepository().findAll();
                     break;
+                case "VanzareLoc":
+                    result = serviceInstance.getVanzareLocRepository().findAll();
+                case "Sala":
+                    result = serviceInstance.getSalaRepository().findAll();
+                default:
+                    result = "Invalid Command";
             }
+        } else if (taskDescription instanceof Integer) {
+            //get
 
-            outputStream.writeObject(result);
-        } catch (IOException exception) {
-            exception.printStackTrace();
         }
     }
 
