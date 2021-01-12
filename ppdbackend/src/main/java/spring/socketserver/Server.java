@@ -2,6 +2,7 @@ package spring.socketserver;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import spring.controller.Service;
+import spring.repos.SalaRepository;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -21,13 +22,13 @@ public class Server {
     private Queue<ClientOrder> clientOrders = new LinkedList<>();
     private List<WorkerThread> clientList = new ArrayList<>();
     private ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(2);
+    private SalaRepository salaRepository;
 
     @Autowired
     Service service;
 
     public Server() throws IOException {
         serverSocket = new ServerSocket(8081);
-
     }
 
 
@@ -102,9 +103,9 @@ public class Server {
         public void run() {
             while (running) {
                 try {
-                    String received = (String) inputStream.readObject();
-                    ClientOrder clientOrder = new ClientOrder(clientConnection, outputStream, inputStream, received);
-                    clientOrders.add(clientOrder);
+//                    String received = (String) inputStream.readObject();
+//                    ClientOrder clientOrder = new ClientOrder(clientConnection, outputStream, inputStream, received);
+//                    clientOrders.add(clientOrder);
                 } catch (IOException | ClassNotFoundException exception) {
                     exception.printStackTrace();
                 }
