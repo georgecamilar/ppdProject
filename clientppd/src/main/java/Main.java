@@ -108,10 +108,11 @@ class ReaderThread extends Thread {
                     break;
                 }
             } catch (EOFException exception) {
-                exception.printStackTrace();
+                System.err.println(exception.getMessage());
                 break;
             } catch (Exception e) {
-                e.printStackTrace();
+                System.err.println("Server closed");;
+                System.exit(0);
             }
         }
     }
