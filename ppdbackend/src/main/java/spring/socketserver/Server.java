@@ -2,13 +2,15 @@ package spring.socketserver;
 
 import spring.controller.Service;
 import spring.model.ConnectedClient;
+import spring.model.Spectacol;
 import spring.model.Vanzare;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executors;
@@ -75,9 +77,10 @@ public class Server {
     }
 
 
-    class TimeThread extends Thread{
+    class TimeThread extends Thread {
         long time;
-        TimeThread(long time){
+
+        TimeThread(long time) {
             this.time = time;
         }
 
@@ -95,6 +98,55 @@ public class Server {
                 System.exit(0);
             } catch (InterruptedException e) {
                 System.err.println("Time crashed");
+            }
+        }
+    }
+
+    class VerificareThread extends Thread {
+        private String filename = "verificare.txt";
+        List<Spectacol> spectacolList;
+        List<Vanzare> vanzareList;
+        private Service service;
+
+        public VerificareThread(Service service) {
+            this.service = service;
+            spectacolList = service.getSpectacolRepository().findAll();
+            vanzareList = service.getVanzareRepository().findAll();
+        }
+
+        @Override
+        public void run() {
+            List<Integer> currentSpectacolTaken;
+            for (Spectacol spectacol : spectacolList) {
+                currentSpectacolTaken = new ArrayList<>();
+                for (Vanzare vanzare : vanzareList) {
+                    if (vanzare.getSpectacolId().equals(spectacol.getId())) {
+                        for (Integer place : vanzare.getListaLocuri()) {
+                            if (currentSpectacolTaken.contains(place)) {
+                                writeResults(vanzare.getId().toString() , "false");
+                            }
+                            currentSpectacolTaken.add(place);
+                            writeResults(vanzare.getId().toString() , "true");
+                        }
+                    }
+                }
+            }
+        }
+
+
+        private void writeResults(String id, String status) {
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+                List<String> towrite = Files.readAllLines(Paths.get(filename));
+
+                for (String line : towrite) {
+                    writer.write(line);
+                    writer.newLine();
+                }
+                writer.write(id + " " + status);
+                writer.flush();
+            } catch (Exception ex) {
+                System.err.println(ex.getMessage());
             }
         }
     }
@@ -134,6 +186,26 @@ public class Server {
             this.command = command;
             this.inputStream = inputStream;
             this.outputStream = outputStream;
+        }
+    }
+
+    class VerifyTask extends Thread {
+        private Service serviceInstance;
+
+        VerifyTask(Service service) {
+            this.serviceInstance = service;
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    wait(5);
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

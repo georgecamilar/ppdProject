@@ -16,7 +16,7 @@ import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Task implements Runnable {
+public class Task implements Runnable,ServerTask {
 
     private SalaRepository salaRepository = new SalaRepository();
     private SpectacolRepository spectacolRepository = new SpectacolRepository();

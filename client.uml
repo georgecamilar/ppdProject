@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>Main</OriginalElement>
+  <nodes>
+    <node x="185.50505952380956" y="0.0">spring.model.Spectacol</node>
+    <node x="32.5" y="139.0">spring.model.LocuriOcupateUpdate</node>
+    <node x="522.1354166666667" y="139.0">spring.service.ClientService</node>
+    <node x="778.9899305555556" y="0.0">spring.model.Sala</node>
+    <node x="583.6017857142858" y="377.0">Main</node>
+    <node x="237.50000000000003" y="139.0">spring.model.VanzareResponse</node>
+    <node x="469.29672619047625" y="0.0">spring.model.Vanzare</node>
+    <node x="594.9899305555556" y="0.0">spring.connection.ClientConnection</node>
+    <node x="264.6689980158731" y="258.0">ReaderThread</node>
+    <node x="462.80208333333337" y="258.0">SenderThread</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="ReaderThread" target="spring.model.VanzareResponse">
+      <point x="-8.4375" y="-14.5" />
+      <point x="323.7314980158731" y="238.0" />
+      <point x="315.5" y="238.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="ReaderThread" target="spring.model.Spectacol">
+      <point x="-42.1875" y="-14.5" />
+      <point x="289.9814980158731" y="228.0" />
+      <point x="22.0" y="228.0" />
+      <point x="22.0" y="119.0" />
+      <point x="232.58839285714294" y="119.0" />
+      <point x="-9.416666666666629" y="14.5" />
+    </edge>
+    <edge source="ReaderThread" target="spring.model.Vanzare">
+      <point x="25.3125" y="-14.5" />
+      <point x="357.4814980158731" y="218.0" />
+      <point x="442.92470238095245" y="218.0" />
+      <point x="442.92470238095245" y="119.0" />
+      <point x="490.511011904762" y="119.0" />
+      <point x="-28.285714285714278" y="14.5" />
+    </edge>
+    <edge source="spring.service.ClientService" target="spring.model.Sala">
+      <point x="59.166666666666686" y="-14.5" />
+      <point x="652.3020833333335" y="119.0" />
+      <point x="798.2399305555556" y="119.0" />
+      <point x="-19.25" y="14.5" />
+    </edge>
+    <edge source="Main" target="spring.model.Vanzare">
+      <point x="14.0" y="-14.5" />
+      <point x="636.1017857142858" y="327.0" />
+      <point x="674.6354166666667" y="327.0" />
+      <point x="674.6354166666667" y="49.0" />
+      <point x="561.2252976190478" y="49.0" />
+      <point x="42.428571428571445" y="14.5" />
+    </edge>
+    <edge source="Main" target="ReaderThread">
+      <point x="-28.0" y="-14.5" />
+      <point x="594.1017857142858" y="347.0" />
+      <point x="298.4189980158731" y="347.0" />
+      <point x="-33.75" y="14.5" />
+    </edge>
+    <edge source="Main" target="SenderThread">
+      <point x="-14.0" y="-14.5" />
+      <point x="608.1017857142858" y="327.0" />
+      <point x="496.55208333333337" y="327.0" />
+      <point x="-33.75" y="14.5" />
+    </edge>
+    <edge source="Main" target="spring.connection.ClientConnection">
+      <point x="28.0" y="-14.5" />
+      <point x="650.1017857142858" y="347.0" />
+      <point x="766.4217261904762" y="347.0" />
+      <point x="766.4217261904762" y="109.0" />
+      <point x="738.4899305555556" y="109.0" />
+      <point x="61.5" y="14.5" />
+    </edge>
+    <edge source="ReaderThread" target="spring.model.LocuriOcupateUpdate">
+      <point x="-25.3125" y="-14.5" />
+      <point x="306.8564980158731" y="218.0" />
+      <point x="125.0" y="218.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="SenderThread" target="spring.service.ClientService">
+      <point x="33.75" y="-14.5" />
+      <point x="564.0520833333334" y="238.0" />
+      <point x="581.3020833333335" y="238.0" />
+      <point x="-11.833333333333314" y="14.5" />
+    </edge>
+    <edge source="spring.service.ClientService" target="spring.model.Spectacol">
+      <point x="-59.166666666666686" y="-14.5" />
+      <point x="533.9687500000001" y="79.0" />
+      <point x="289.08839285714294" y="79.0" />
+      <point x="47.08333333333337" y="14.5" />
+    </edge>
+    <edge source="Main" target="spring.service.ClientService">
+      <point x="7.0" y="-14.5" />
+      <point x="629.1017857142858" y="317.0" />
+      <point x="639.948263888889" y="317.0" />
+      <point x="639.948263888889" y="238.0" />
+      <point x="652.3020833333335" y="238.0" />
+      <point x="59.166666666666686" y="14.5" />
+    </edge>
+    <edge source="Main" target="spring.model.Spectacol">
+      <point x="-35.0" y="-14.5" />
+      <point x="587.1017857142858" y="357.0" />
+      <point x="0.0" y="357.0" />
+      <point x="0.0" y="99.0" />
+      <point x="194.9217261904762" y="99.0" />
+      <point x="-47.08333333333337" y="14.5" />
+    </edge>
+    <edge source="SenderThread" target="spring.model.Spectacol">
+      <point x="-33.75" y="-14.5" />
+      <point x="496.55208333333337" y="208.0" />
+      <point x="478.79166666666674" y="208.0" />
+      <point x="478.79166666666674" y="89.0" />
+      <point x="270.25505952380956" y="89.0" />
+      <point x="28.25" y="14.5" />
+    </edge>
+    <edge source="SenderThread" target="spring.model.Vanzare">
+      <point x="-11.25" y="-14.5" />
+      <point x="519.0520833333334" y="198.0" />
+      <point x="499.63541666666674" y="198.0" />
+      <point x="499.63541666666674" y="119.0" />
+      <point x="504.6538690476191" y="119.0" />
+      <point x="-14.142857142857167" y="14.5" />
+    </edge>
+    <edge source="ReaderThread" target="spring.service.ClientService">
+      <point x="42.1875" y="-14.5" />
+      <point x="374.3564980158731" y="228.0" />
+      <point x="533.9687500000001" y="228.0" />
+      <point x="-59.166666666666686" y="14.5" />
+    </edge>
+    <edge source="spring.service.ClientService" target="spring.connection.ClientConnection">
+      <point x="11.833333333333314" y="-14.5" />
+      <point x="604.9687500000001" y="119.0" />
+      <point x="615.4899305555556" y="119.0" />
+      <point x="-61.5" y="14.5" />
+    </edge>
+    <edge source="Main" target="spring.model.Sala">
+      <point x="35.0" y="-14.5" />
+      <point x="657.1017857142858" y="357.0" />
+      <point x="836.7399305555556" y="357.0" />
+      <point x="19.25" y="14.5" />
+    </edge>
+    <edge source="spring.service.ClientService" target="spring.model.Vanzare">
+      <point x="-35.5" y="-14.5" />
+      <point x="557.6354166666667" y="69.0" />
+      <point x="532.9395833333334" y="69.0" />
+      <point x="14.142857142857167" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="389.0" y="114.5" />
+  <SelectedNodes>
+    <node>spring.model.LocuriOcupateUpdate</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

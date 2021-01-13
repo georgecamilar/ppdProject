@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>spring.model.ConnectedClient</OriginalElement>
+  <nodes>
+    <node x="24.128846153846155" y="188.0">spring.model.ConnectedClient</node>
+    <node x="329.0996794871795" y="188.0">spring.controller.Service</node>
+    <node x="417.20000000000005" y="0.0">spring.model.Spectacol</node>
+    <node x="495.20000000000005" y="188.0">spring.model.LocuriOcupateUpdate</node>
+    <node x="395.60512820512815" y="89.0">spring.repos.SpectacolRepository</node>
+    <node x="814.8634615384616" y="0.0">spring.model.Sala</node>
+    <node x="400.0996794871795" y="327.0">spring.socketserver.Task</node>
+    <node x="779.7083333333335" y="89.0">spring.repos.SalaRepository</node>
+    <node x="201.12884615384615" y="89.0">spring.repos.VanzareRepository</node>
+    <node x="152.60416666666674" y="0.0">spring.model.Vanzare</node>
+    <node x="6.333333333333371" y="327.0">spring.socketserver.Server</node>
+    <node x="706.3333333333335" y="188.0">spring.model.VanzareResponse</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="1.0" x="467.5" y="178.0" />
+  <SelectedNodes>
+    <node>spring.repos.VanzareRepository</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
